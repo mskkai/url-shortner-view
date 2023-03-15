@@ -23,6 +23,13 @@ export class DashboardComponent implements OnInit {
     this.getAllGeneratedUrls();
   }
 
+  /**
+   * Method to retrieve the source URL for the given target shortened URL
+   *
+   * @param   {number}  id  [id description]
+   *
+   * @return  {[type]}      [return description]
+   */
   getUrlByShortUrl(id: number) {
     this.urlShortnerService
       .updateTotalVisits(id)
@@ -36,6 +43,11 @@ export class DashboardComponent implements OnInit {
       });
   }
 
+  /**
+   * Method to generate the shortened URL for the given URL
+   *
+   * @return  {[type]}  [return description]
+   */
   generateShortUrl() {
     this.urlShortnerService.getShortUrl(this.url).subscribe(
       (res) => {
@@ -57,6 +69,11 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  /**
+   * Method to retrieve all the generated URLs
+   *
+   * @return  {[type]}  [return description]
+   */
   getAllGeneratedUrls() {
     this.urlShortnerService.getUrls().subscribe(
       (res) => {
@@ -75,6 +92,13 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  /**
+   * Method to verify if the URL is expired
+   *
+   * @param   {string}  expiryAt  [expiryAt description]
+   *
+   * @return  {[type]}            [return description]
+   */
   isExpired(expiryAt: string) {
     const expiryDate = new Date(expiryAt);
 
@@ -85,6 +109,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Method to delete the URL
+   *
+   * @param   {number}  id  [id description]
+   *
+   * @return  {[type]}      [return description]
+   */
   deleteUrl(id: number) {
     this.urlShortnerService.deleteUrl(id).subscribe(
       (res) => {

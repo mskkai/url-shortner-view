@@ -69,14 +69,14 @@
           </td>
           <td>{{ item.visits }}</td>
           <td>{{ item.createdAt | date : "dd/MM/yyyy" }}</td>
-          <td>{{ isExpired(item.createdAt) ? "Yes" : "No" }}</td>
+          <td>{{ isExpired(item.expiryAt) ? "Yes" : "No" }}</td>
           <td>
             <button
               class="btn btn-danger"
               type="button"
               (click)="deleteUrl(item.id)"
               id="button-addon2"
-              disabled="{{ isExpired(item.createdAt) }}"
+              disabled="{{ isExpired(item.expiryAt) }}"
             >
               Delete
             </button>
