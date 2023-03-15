@@ -49,24 +49,31 @@ export class DashboardComponent implements OnInit {
    * @return  {[type]}  [return description]
    */
   generateShortUrl() {
-    this.urlShortnerService.getShortUrl(this.url).subscribe(
-      (res) => {
-        if (res == null) {
-          this.noDataHandler();
-        } else {
-          this.isUrlGenerated = true;
-          this.showMessage = false;
-          this.shortUrl = res.shorturl;
-          this.originalUrl = res.originalurl;
+    if (this.url != '') {
+      this.urlShortnerService.getShortUrl(this.url).subscribe(
+        (res) => {
+          if (res == null) {
+            this.noDataHandler();
+          } else {
+            this.isUrlGenerated = true;
+            this.showMessage = false;
+            this.shortUrl = res.shorturl;
+            this.originalUrl = res.originalurl;
+          }
+        },
+        (err) => {
+          this.handleError(err);
+        },
+        () => {
+          this.url = '';
+          this.getAllGeneratedUrls();
         }
-      },
-      (err) => {
-        this.handleError(err);
-      },
-      () => {
-        this.getAllGeneratedUrls();
-      }
-    );
+      );
+    } else {
+      this.showMessage = true;
+      this.message.type = 'error';
+      this.message.content = 'Enter valid url';
+    }
   }
 
   /**
