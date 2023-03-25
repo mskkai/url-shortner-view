@@ -4,3 +4,7 @@ button {
   -ms-user-select: text;
   user-select: text;
 }
+
+.logout {
+  text-align-last: right;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UrlShortnerService } from 'src/app/shared/url-shortner.service';
 import { GeneratedUrl } from './dashboard.model';
 
@@ -15,12 +16,18 @@ export class DashboardComponent implements OnInit {
   message: { type: string; content: string } = { type: '', content: '' };
   shortUrl: string = '';
   urls: typeof GeneratedUrl[] = [];
+  userName: string = '';
 
-  constructor(private urlShortnerService: UrlShortnerService) {}
+  constructor(
+    private urlShortnerService: UrlShortnerService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.isUrlGenerated = false;
     this.getAllGeneratedUrls();
+    let userFromStorage = localStorage.getItem('currentUser')?.split(':')[0];
+    this.userName = userFromStorage || '';
   }
 
   /**
@@ -53,7 +60,9 @@ export class DashboardComponent implements OnInit {
       this.urlShortnerService.getShortUrl(this.url).subscribe(
         (res) => {
           if (res == null) {
-            this.noDataHandler();
+            this.showMessage = true;
+            this.message.type = 'error';
+            this.message.content = 'Invalid URL. Enter a valid URL.';
           } else {
             this.isUrlGenerated = true;
             this.showMessage = false;
@@ -86,11 +95,11 @@ export class DashboardComponent implements OnInit {
       (res) => {
         if (res == null) {
           this.noDataHandler();
-        }
-        this.urls = res;
-        if (this.urls.length > 0) {
-          this.isUrlGenerated = true;
-          this.showMessage = false;
+        } else {
+          this.urls = res;
+          if (this.urls.length > 0) {
+            this.isUrlGenerated = true;
+          }
         }
       },
       (err) => {
@@ -135,11 +144,16 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  logout() {
+    localStorage.removeItem('currentUser');
+    this.router.navigate(['/login']);
+  }
+
   handleError(err: any) {
     this.isUrlGenerated = false;
     this.showMessage = true;
     this.message.type = 'error';
-    this.message.content = err;
+    this.message.content = err.message;
   }
 
   noDataHandler() {
