@@ -1,6 +1,17 @@
 <div class="container">
-  <div class="row">
-    <h4 class="text-center text-primary m-3">Short URL</h4>
+  <h4 class="text-center text-primary m-3">Short URL</h4>
+  <div class="logout">
+    <span
+      >Welcome <b>{{ userName.toUpperCase() }}</b> &nbsp; &nbsp;
+    </span>
+    <button
+      class="btn btn-outline-secondary"
+      type="button"
+      (click)="logout()"
+      id="button-addon3"
+    >
+      Logout
+    </button>
   </div>
 
   <div class="row shadow mt-3">
